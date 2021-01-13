@@ -1,0 +1,60 @@
+CREATE DATABASE airport;
+CREATE TABLE IF NOT EXISTS planes
+(
+    id_plane SERIAL PRIMARY KEY,
+    model TEXT NOT NULL,
+    serial_number TEXT,
+    seats INT
+);
+CREATE TABLE IF NOT EXISTS pilots
+(
+    id_pilot SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    age INT
+);
+CREATE TABLE IF NOT EXISTS control
+(
+    id SERIAL PRIMARY KEY,
+    pilot_ID INT,
+    plane_ID INT,
+    CONSTRAINT control_pilot_id_fk FOREIGN KEY (pilot_ID) REFERENCES pilots(id),
+    CONSTRAINT control_plane_id_fk FOREIGN KEY (plane_ID) REFERENCES planes(id)
+);
+CREATE TABLE IF NOT EXISTS airport_data
+(
+    id_data  serial not null
+        constraint airport_data_pk
+            primary key,
+    plane_id integer
+        constraint airport_data_plane_id_fk
+            references planes
+            on update set default on delete set null,
+    amount   integer
+);
+
+INSERT INTO planes(model, serial_number, seats) VALUES
+('Boeing', '747', 467),
+('Airbus','A320', 186);
+INSERT INTO pilots(name, age) VALUES
+('Jimmy Fellow', 38),
+('Emily Smith', 44),
+('Henry Poison', 27),
+('Elizabeth Swong', 32),
+('Dorry Simpson', 26),
+('John Doe', 36),
+('Ted Nosby', 29),
+('Robbie Williams', 45);
+INSERT INTO control(PILOT_ID, PLANE_ID) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(2, 2),
+(3, 1),
+(4, 2),
+(5, 2),
+(6, 2),
+(7, 2),
+(8, 2);
+INSERT INTO airport_data(plane_id, amount) VALUES
+(1, 2),
+(2, 5);
